@@ -11,3 +11,4 @@ async def Welcome():
 @router.post("/upload")
 async def upload_log(file: UploadFile = File(...)):
     print("uploading file")
+    
