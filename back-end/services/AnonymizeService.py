@@ -3,14 +3,14 @@ from presidio_anonymizer import AnonymizerEngine
 
 
 
-class anonymize_service:
+class AnonymizeService:
     
     def __init__(self):
         self.analyzer = AnalyzerEngine()
         self.anonymizer = AnonymizerEngine()
         
     
-    def annonymize(self, text):
+    def anonymize(self, text):
         results = self.analyzer.analyze(text , language='en')
         targeted_text = self.anonymizer.anonymize(text, analyzer_results=results)
         return targeted_text
