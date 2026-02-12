@@ -38,11 +38,11 @@ h1 {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.8em 2.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #4d8241;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -64,5 +64,64 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Page styles  */
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.inputFile {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.8em 2.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #c1ca41;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  z-index: 1000;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+.FixedTop {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  justify-self: center;
+  justify-items: center;
+  width: 70%;
+  background-color: #242424;
+  padding: 1em;
+  z-index: 1000;
+}
+
+.pageWidth {
+  max-width: 30%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

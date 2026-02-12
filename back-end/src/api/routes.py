@@ -11,7 +11,6 @@ async def Welcome():
 
 @router.post("/upload")
 async def upload_log(file: UploadFile = File(...)):
-    print ("The route is called")
     content = await file.read()
     text = content.decode("utf-8")
     anonymizer = AnonymizeService()

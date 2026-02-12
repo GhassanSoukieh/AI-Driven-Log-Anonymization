@@ -1,12 +1,18 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const api = "http://127.0.0.1:8000/";
 
 function App() {
+  const navigate = useNavigate();
+
   const [welcomeMessage, setWelcomeMessage] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [anonmizedText, setAnonymizedText] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
+  const [watignForResponse, setWaitingForResponse] = useState<boolean>(false);
+  const [done, setDone] = useState<boolean>(false);
 
   useEffect(() => {
     fetch(`${api}`)
@@ -23,6 +29,7 @@ function App() {
       alert("Please select a file to upload.");
       return;
     }
+    setWaitingForResponse(true);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -39,34 +46,64 @@ function App() {
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Failed to upload the file.");
+    } finally {
+      setWaitingForResponse(false);
+      setDone(true);
     }
   };
-  //______________________________________________________________________________________________;
+  //_____________________________________________________________________________________________
+  const handleStartAgain = () => {
+    setSelectedFile(null);
+    setAnonymizedText("");
+    setFileName("");
+    setDone(false);
+  };
 
   return (
     <>
-      <div>
-        <h1>AI-Driven-Log-Anonymization</h1>
-        <div>{welcomeMessage}</div>
-        <div>
-          <input
-            type="file"
-            name="log"
-            id=""
-            onChange={(e) =>
-              setSelectedFile(e.target.files ? e.target.files[0] : null)
-            }
-          />
-          <button className="space-up" onClick={uploadfile}>
-            Anonmize
-          </button>
-          {anonmizedText && (
-            <div>
-              <h2>Anonymized Text:</h2>
-              <pre>{anonmizedText}</pre>
-            </div>
-          )}
+      <div className="flexCenter">
+        <div className="">
+          <h1 className="">AI-Driven-Log-Anonymization</h1>
+          <div>{welcomeMessage}</div>
         </div>
+        {watignForResponse ? (
+          <div className="loader space-up"></div>
+        ) : (
+          <div>
+            <div className="flexCenter space-up  ">
+              <input
+                type="file"
+                name="log"
+                className="hidden"
+                id="logInput"
+                onChange={(e) => {
+                  setSelectedFile(e.target.files ? e.target.files[0] : null);
+                  setFileName(e.target.files ? e.target.files[0].name : "");
+                }}
+              />
+              <label
+                htmlFor="logInput"
+                className={done ? "hidden" : "inputFile"}
+              >
+                Choose file to upload
+              </label>
+              <div className={done ? "hidden" : ""}>{fileName}</div>
+              <button
+                className="space-up"
+                onClick={done ? handleStartAgain : uploadfile}
+                disabled={!selectedFile && !done}
+              >
+                {done ? "start again" : "anonymize"}
+              </button>
+              {anonmizedText && (
+                <div className="flexCenter">
+                  <h2>Anonymized Text:</h2>
+                  <div>{anonmizedText}</div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
